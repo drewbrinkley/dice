@@ -102,15 +102,36 @@ def generate_dice_faces_diagram(dice_values):
     # create docstring to describe function
     """Return a diagram of ASCII art to display the dice faces of the 'dice_values'
     """
-    # Generate a list of faces from DICE_ART
-    dice_faces = [] # create empty list to store dice faces for the dice values
+    # create variable 'dice_faces' which is set to result of function '_get_dice_faces()' called on argument 'dice_values'
+    dice_faces = _get_dice_faces(dice_values)
+    # create variable 'dice_faces_rows' which is set to result of function '_generate_dice_faces_rows()' called on agrument 'dice_faces'
+    dice_faces_rows = _generate_dice_faces_rows(dice_faces)
+    
+    # Generate header with the word "RESULTS" centered
+    # temporary variable to hold width of current diagram
+    width = len(dice_faces_rows[0]) 
+    # creates header with "RESULTS" by calling str.center(), with diagram's WIDTH and ~ as arguments
+    diagram_header = " RESULTS ".center(width, "~")
+
+    # generates string to hold final diagram, using \n to separate rows.  join() combines header and strings (rows) making up the die faces
+    dice_faces_diagram = "\n".join([diagram_header] + dice_faces_rows)
+    return dice_faces_diagram
+    
+# create helper function '_get_dice_faces()'
+def _get_dice_faces(dice_values):
+    # create empty list to store dice faces for the dice values
+    dice_faces = [] 
     # create for-loop that will iterate over the dice values
     for value in dice_values:
         # grab the die face diagram matching the roll value from 'DICE-ART' and adds it to the 'dice_faces' list
         dice_faces.append(DICE_ART[value])
+    # return result of 'dice_faces'
+    return dice_faces
 
-    # Generate a list containing the dice faces rows
-    dice_faces_rows = [] # create empty list to store the rows for the final diagram
+# create helper function '_generate_dice_faces_rows()'
+def _generate_dice_faces_rows(dice_faces):
+    # create empty list to store the rows for the final diagram
+    dice_faces_rows = [] 
     # create for-loop to iterate from 0 to DIE_HEIGHT - 1
     for row_idx in range(DIE_HEIGHT):
         # create empty list 'row_components' to hold the portions of die faces in each row
@@ -123,16 +144,8 @@ def generate_dice_faces_diagram(dice_values):
         row_string = DIE_FACE_SEPARATOR.join(row_components)
         # append the row string to the list that will define the final diagram
         dice_faces_rows.append(row_string)
+    return dice_faces_rows
 
-    # Generate header with the word "RESULTS" centered
-    # temporary variable to hold width of current diagram
-    width = len(dice_faces_rows[0]) 
-    # creates header with "RESULTS" by calling str.center(), with diagram's WIDTH and ~ as arguments
-    diagram_header = " RESULTS ".center(width, "~")
-
-    # generates string to hold final diagram, using \n to separate rows.  join() combines header and strings (rows) making up the die faces
-    dice_faces_diagram = "\n".join([diagram_header] + dice_faces_rows)
-    return dice_faces_diagram
 
 # ~~~ App's main code block ~~~
 # 1. Get and validate the user's input
